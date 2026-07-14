@@ -6,6 +6,12 @@
   --font-main: 'Helvetica Neue', Arial, sans-serif;
 }
 
+/* Cuando el <html> tenga data-theme="light", estas variables reemplazan a las de arriba */
+[data-theme="light"] {
+  --color-bg: #f4f4f2;
+  --color-text: #12120f;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -17,7 +23,8 @@ body {
   color: var(--color-text);
   font-family: var(--font-main);
   line-height: 1.4;
-  overflow-x: hidden; /* evita scroll horizontal accidental */
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 a {
@@ -37,8 +44,31 @@ a {
   z-index: 100;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
 .logo {
   font-size: 1rem;
+  font-weight: 600;
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 0.85rem;
+  cursor: pointer;
   font-weight: 600;
 }
 
@@ -103,6 +133,16 @@ a {
   font-size: 2rem;
   text-transform: lowercase;
 }
+.menu-links a {
+  position: relative;
+  display: inline-block;
+  transition: opacity 0.3s ease;
+}
+
+.menu-links a:hover {
+  opacity: 0.5;
+}
+
 /* ---------- HERO ---------- */
 .hero {
   min-height: 100vh;
@@ -122,4 +162,104 @@ a {
 .hero-sub {
   font-size: 0.9rem;
   opacity: 0.7;
+}
+
+/* ---------- PROYECTOS ---------- */
+.projects {
+  padding: 2rem 1.2rem 4rem;
+}
+
+.section-title {
+  font-size: 0.9rem;
+  text-transform: lowercase;
+  opacity: 0.6;
+  margin-bottom: 1.5rem;
+}
+
+.projects-list {
+  list-style: none;
+}
+
+.project-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.project-item:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.project-item a {
+  display: block;
+  padding: 1.2rem 0;
+}
+
+.project-thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: #2a2a2a;
+  margin-bottom: 0.8rem;
+  overflow: hidden; /* nuevo: recorta lo que se sale */
+}
+
+.project-item a:hover .project-thumb {
+  transform: scale(1.03);
+}
+
+.project-thumb {
+  transition: transform 0.5s ease;
+}
+
+.project-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.project-info h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.project-info span {
+  font-size: 0.8rem;
+  opacity: 0.5;
+}
+
+/* ================================
+   DESKTOP / TABLET (min-width: 768px)
+   ================================ */
+
+@media (min-width: 768px) {
+
+  .topbar {
+    padding: 1.5rem 2.5rem;
+  }
+
+  .hero {
+    padding: 8rem 2.5rem 3rem;
+  }
+
+  .hero h1 {
+    font-size: 3.2rem;
+    max-width: 900px;
+  }
+
+  .projects {
+    padding: 3rem 2.5rem 6rem;
+  }
+
+  .projects-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .project-item {
+    border-top: none;
+  }
+
+  .project-item:last-child {
+    border-bottom: none;
+  }
+
 }

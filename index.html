@@ -3,36 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tu Nombre ✲ Portafolio</title>
+  <title>cifuvelez ✲ Portafolio</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- Botón de menú (abre el overlay a pantalla completa) -->
-  <header class="topbar">
-    <a href="#" class="logo">Tu Nombre</a>
+<header class="topbar">
+  <a href="#" class="logo">cifuvelez</a>
+  <div class="topbar-actions">
+    <button class="lang-btn" aria-label="Cambiar idioma">EN</button>
+    <button class="theme-btn" aria-label="Cambiar tema">☾</button>
     <button class="menu-btn" aria-label="Abrir menú">menu</button>
-  </header>
+  </div>
+</header>
 
   <!-- Menú overlay, oculto al inicio -->
   <nav class="menu-overlay" id="menu-overlay">
     <button class="close-btn" aria-label="Cerrar menú">close</button>
-    <ul class="menu-links">
-      <li><a href="#trabajos">trabajos</a></li>
-      <li><a href="#about">sobre mí</a></li>
-      <li><a href="#contacto">contacto</a></li>
+      <ul class="menu-links">
+      <li><a href="#trabajos" data-i18n="menu_trabajos">trabajos</a></li>
+      <li><a href="#about" data-i18n="menu_about">sobre mí</a></li>
+      <li><a href="#contacto" data-i18n="menu_contacto">contacto</a></li>
     </ul>
   </nav>
 
   <!-- Sección principal / hero -->
   <main>
     <section class="hero">
-      <h1>Diseñador gráfico &amp; motion designer</h1>
-      <p class="hero-sub">Basado en [tu ciudad]</p>
-    </section>
+    <h1 data-i18n="hero_title">Diseñador gráfico &amp; motion designer</h1>
+    <p class="hero-sub" data-i18n="hero_sub">Basado en Cali</p>
+  </section>
 
     <!-- Lista de proyectos -->
     <section id="trabajos" class="projects">
+     <h2 class="section-title" data-i18n="trabajos_title">Trabajos</h2>
+
+      <ul class="projects-list">
+        <li class="project-item">
+          <a href="#">
+            <div class="project-thumb"></div>
+            <div class="project-info">
+              <h3 data-i18n="p1_titulo">Proyecto Uno</h3>
+              <span data-i18n="p1_cat">Branding</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="project-item">
+          <a href="#">
+            <div class="project-thumb"></div>
+            <div class="project-info">
+              <h3 data-i18n="p2_titulo">Proyecto Dos</h3>
+              <span data-i18n="p2_cat">Motion</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="project-item">
+          <a href="#">
+            <div class="project-thumb"></div>
+            <div class="project-info">
+              <h3 data-i18n="p3_titulo">Proyecto Tres</h3>
+              <span data-i18n="p3_cat">Editorial</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="project-item">
+          <a href="#">
+            <div class="project-thumb"></div>
+            <div class="project-info">
+              <h3 data-i18n="p4_titulo">Proyecto Cuatro</h3>
+              <span data-i18n="p4_cat">Identidad</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </section>
+
       <!-- aquí irán tus proyectos, uno por uno -->
     </section>
   </main>
