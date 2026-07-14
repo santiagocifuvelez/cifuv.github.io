@@ -3,28 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CIFUV</title>
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #0033cc;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-    }
-    h1 {
-      font-size: 6rem;
-      font-weight: 800;
-      margin: 0;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-  </style>
+  <title>Tu Nombre ✲ Portafolio</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>cifuv</h1>
+
+  <!-- Botón de menú (abre el overlay a pantalla completa) -->
+  <header class="topbar">
+    <a href="#" class="logo">Tu Nombre</a>
+    <button class="menu-btn" aria-label="Abrir menú">menu</button>
+  </header>
+
+  <!-- Menú overlay, oculto al inicio -->
+  <nav class="menu-overlay" id="menu-overlay">
+    <button class="close-btn" aria-label="Cerrar menú">close</button>
+    <ul class="menu-links">
+      <li><a href="#trabajos">trabajos</a></li>
+      <li><a href="#about">sobre mí</a></li>
+      <li><a href="#contacto">contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- Sección principal / hero -->
+  <main>
+    <section class="hero">
+      <h1>Diseñador gráfico &amp; motion designer</h1>
+      <p class="hero-sub">Basado en [tu ciudad]</p>
+    </section>
+
+    <!-- Lista de proyectos -->
+    <section id="trabajos" class="projects">
+      <!-- aquí irán tus proyectos, uno por uno -->
+    </section>
+  </main>
+
+  <script src="sketch.js"></script>
 </body>
 </html>

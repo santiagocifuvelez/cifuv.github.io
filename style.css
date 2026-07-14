@@ -1,0 +1,125 @@
+/* ---------- RESET Y VARIABLES ---------- */
+:root {
+  --color-bg: #0e0e0e;
+  --color-text: #f2f2f2;
+  --color-accent: #ff5c35;
+  --font-main: 'Helvetica Neue', Arial, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  line-height: 1.4;
+  overflow-x: hidden; /* evita scroll horizontal accidental */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+/* ---------- TOPBAR ---------- */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-transform: lowercase;
+}
+
+/* ---------- MENU OVERLAY ---------- */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1.5rem;
+  z-index: 200;
+
+  /* Estado oculto por defecto */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+}
+
+.menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-transform: lowercase;
+}
+
+.menu-links {
+  list-style: none;
+}
+
+.menu-links li {
+  margin-bottom: 0.8rem;
+}
+
+.menu-links a {
+  font-size: 2rem;
+  text-transform: lowercase;
+}
+/* ---------- HERO ---------- */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem 1.2rem 2rem;
+}
+
+.hero h1 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 0.8rem;
+}
+
+.hero-sub {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
