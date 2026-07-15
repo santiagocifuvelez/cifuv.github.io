@@ -94,3 +94,144 @@ langBtn.addEventListener('click', () => {
   const next = current === 'es' ? 'en' : 'es';
   applyLanguage(next);
 });
+
+// ESPIRALLLLLLLLLL
+
+// 1. Tomamos los datos de los proyectos ya existentes en el HTML (no los repetimos a mano)
+const projectItems = document.querySelectorAll('.project-item');
+const spiralContainer = document.querySelector('.projects-spiral');
+const spiralInner = document.querySelector('.spiral-inner');
+
+let spiralItems = []; // guarda cada miniatura junto con su ángulo "de origen"
+
+function buildSpiral() {
+  const total = projectItems.length;
+  spiralItems = [];
+
+  const verticalSpacing = 130;
+
+  projectItems.forEach((item, index) => {
+    const clone = item.cloneNode(true);
+    clone.classList.add('spiral-item');
+    clone.classList.remove('project-item');
+    spiralInner.appendChild(clone);
+
+    const baseAngle = (360 / total) * index * 2;
+    const yOffset = (index - (total - 1) / 2) * verticalSpacing;
+
+    spiralItems.push({ el: clone, baseAngle, yOffset });
+  });
+
+  renderSpiral(0);
+}
+
+let time = 0; // reloj interno que avanza solo, para el efecto de flotado
+
+function renderSpiral(rotation) {
+  const radius = 180;
+
+  spiralItems.forEach(({ el, baseAngle, yOffset }, index) => {
+    const angle = baseAngle + rotation;
+    const radians = angle * (Math.PI / 180);
+
+    const x = radius * Math.sin(radians);
+    const z = radius * Math.cos(radians);
+
+    const depthRatio = (z + radius) / (2 * radius);
+    const scale = 0.6 + depthRatio * 0.5;
+    const opacity = 0.3 + depthRatio * 0.7;
+
+    // --- NUEVO: inclinación tipo abanico ---
+    const tiltX = Math.sin(radians) * 12; // se inclina más hacia los lados, derecho al centro
+
+    // --- NUEVO: flotado sutil, distinto por tarjeta (usamos el index para desincronizarlas) ---
+    const floatOffset = Math.sin(time + index * 1.3) * 8;
+    const floatTilt = Math.sin(time + index * 1.3) * 4;
+
+    el.style.transform =
+      `translate(-50%, -50%) translate3d(${x}px, ${yOffset + floatOffset}px, ${z}px) ` +
+      `rotateX(${tiltX + floatTilt}deg) scale(${scale})`;
+    el.style.opacity = opacity;
+    el.style.zIndex = Math.round(z);
+  });
+}
+
+// --- NUEVO: giro automático infinito ---
+const autoRotateSpeed = 0.15; // grados por frame, ajusta para más/menos velocidad
+
+function animate() {
+  time += 0.02; // qué tan rápido "respira" el flotado
+
+  if (!isDragging) {
+    currentRotation += autoRotateSpeed;
+  }
+  renderSpiral(currentRotation);
+  requestAnimationFrame(animate);
+}
+
+// Seleccionamos los botones de vista y los dos contenedores
+const viewBtns = document.querySelectorAll('.view-btn');
+const projectsList = document.querySelector('.projects-list');
+
+// Forzamos el estado inicial: spiral visible, list oculta — sin importar el tamaño de pantalla
+projectsList.style.display = 'none';
+
+viewBtns.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const selectedView = btn.getAttribute('data-view'); // "list" o "spiral"
+
+    // 1. Quitamos "active" de TODOS los botones, y se lo damos solo al que clickearon
+    viewBtns.forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // 2. Mostramos/ocultamos los contenedores según la vista elegida
+    if (selectedView === 'spiral') {
+      projectsList.style.display = 'none';
+      spiralContainer.classList.add('active');
+    } else {
+      projectsList.style.display = '';
+      spiralContainer.classList.remove('active');
+    }
+  });
+});
+
+// Variables para llevar el control del arrastre
+let isDragging = false;
+let startX = 0;
+let currentRotation = 0;   // el ángulo acumulado real
+let startRotation = 0;     // el ángulo que tenía al iniciar este arrastre
+
+const spiral = document.querySelector('.projects-spiral');
+
+// 1. Cuando el usuario presiona (mouse) o toca (celular)
+spiral.addEventListener('pointerdown', (e) => {
+  isDragging = true;
+  startX = e.clientX;
+  startRotation = currentRotation;
+});
+
+// 2. Mientras se mueve, calculamos cuánto arrastró y rotamos
+window.addEventListener('pointermove', (e) => {
+  if (!isDragging) return;
+
+  const deltaX = e.clientX - startX;
+  const sensitivity = 0.4;
+  currentRotation = startRotation + deltaX * sensitivity;
+  window.addEventListener('pointermove', (e) => {
+  if (!isDragging) return;
+
+  const deltaX = e.clientX - startX;
+  const sensitivity = 0.4;
+  currentRotation = startRotation + deltaX * sensitivity;
+
+  renderSpiral(currentRotation);
+});
+});
+
+// 3. Cuando suelta (mouse o dedo), dejamos de arrastrar
+window.addEventListener('pointerup', () => {
+  isDragging = false;
+});
+
+buildSpiral();
+animate();
