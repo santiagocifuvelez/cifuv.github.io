@@ -143,6 +143,116 @@ a {
   opacity: 0.5;
 }
 
+/* ---------- ABOUT ---------- */
+.about {
+  padding: 2rem 1.2rem 4rem;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.about-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+}
+
+.about-text p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  opacity: 0.85;
+}
+
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- CONTACTO ---------- */
+.contact {
+  padding: 2rem 1.2rem 4rem;
+}
+
+.contact-info {
+  margin-bottom: 2.5rem;
+}
+
+.contact-email {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.contact-socials {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.contact-socials a {
+  font-size: 0.9rem;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.contact-socials a:hover {
+  opacity: 1;
+}
+
+/* --- Formulario --- */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 500px;
+}
+
+.contact-form label {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  text-transform: lowercase;
+}
+
+.contact-form input,
+.contact-form textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-size: 1rem;
+  padding: 0.6rem 0;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--color-accent);
+}
+
+.contact-form button {
+  align-self: flex-start;
+  background: none;
+  border: 1px solid var(--color-text);
+  color: var(--color-text);
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-transform: lowercase;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.contact-form button:hover {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
+
 /* ---------- HERO ---------- */
 .hero {
   min-height: 100vh;
@@ -178,7 +288,6 @@ a {
 
 .projects-list {
   list-style: none;
-  display: none;
 }
 
 .project-item {
@@ -329,4 +438,9 @@ a {
   height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.1s linear;
+}
+
+/* ---------- UTILIDAD ---------- */
+.is-hidden {
+  display: none !important;
 }

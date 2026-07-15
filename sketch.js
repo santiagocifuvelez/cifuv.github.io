@@ -174,23 +174,20 @@ const viewBtns = document.querySelectorAll('.view-btn');
 const projectsList = document.querySelector('.projects-list');
 
 // Forzamos el estado inicial: spiral visible, list oculta — sin importar el tamaño de pantalla
-projectsList.style.display = 'none';
 
 viewBtns.forEach((btn) => {
   btn.addEventListener('click', () => {
-    const selectedView = btn.getAttribute('data-view'); // "list" o "spiral"
+    const selectedView = btn.getAttribute('data-view');
 
-    // 1. Quitamos "active" de TODOS los botones, y se lo damos solo al que clickearon
     viewBtns.forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
 
-    // 2. Mostramos/ocultamos los contenedores según la vista elegida
     if (selectedView === 'spiral') {
-      projectsList.style.display = 'none';
-      spiralContainer.classList.add('active');
+      projectsList.classList.add('is-hidden');
+      spiralContainer.classList.remove('is-hidden');
     } else {
-      projectsList.style.display = '';
-      spiralContainer.classList.remove('active');
+      projectsList.classList.remove('is-hidden');
+      spiralContainer.classList.add('is-hidden');
     }
   });
 });

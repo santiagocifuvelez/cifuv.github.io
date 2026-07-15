@@ -21,31 +21,31 @@
   <!-- Menú overlay, oculto al inicio -->
   <nav class="menu-overlay" id="menu-overlay">
     <button class="close-btn" aria-label="Cerrar menú">close</button>
-      <ul class="menu-links">
-      <li><a href="#trabajos" data-i18n="menu_trabajos">trabajos</a></li>
-      <li><a href="#about" data-i18n="menu_about">sobre mí</a></li>
-      <li><a href="#contacto" data-i18n="menu_contacto">contacto</a></li>
+    <ul class="menu-links">
+      <li><a href="#" data-page="trabajos" data-i18n="menu_trabajos">trabajos</a></li>
+      <li><a href="#" data-page="about" data-i18n="menu_about">sobre mí</a></li>
+      <li><a href="#" data-page="contacto" data-i18n="menu_contacto">contacto</a></li>
     </ul>
   </nav>
 
   <!-- Sección principal / hero -->
-  <main>
+<main>
+
+  <!-- ============ PÁGINA: WORKS (home) ============ -->
+  <div class="page active" id="page-works" data-page="trabajos">
+
     <section class="hero">
-    <h1 data-i18n="hero_title">Diseñador gráfico &amp; motion designer</h1>
-    <p class="hero-sub" data-i18n="hero_sub">Basado en Cali</p>
-  </section>
+      <h1 data-i18n="hero_title">Diseñador gráfico &amp; motion designer</h1>
+      <p class="hero-sub" data-i18n="hero_sub">Basado en [tu ciudad]</p>
+    </section>
 
-    <!-- Lista de proyectos -->
-
-    <section id="trabajos" class="projects">
-     <h2 class="section-title" data-i18n="trabajos_title">Trabajos</h2>
-
+    <section class="projects">
       <div class="view-toggle">
         <button class="view-btn active" data-view="spiral">spiral</button>
         <button class="view-btn" data-view="list">list</button>
       </div>
 
-      <ul class="projects-list">
+       <ul class="projects-list is-hidden">
         <li class="project-item">
           <a href="#">
             <div class="project-thumb"></div>
@@ -87,14 +87,61 @@
         </li>
       </ul>
 
-    <div class="projects-spiral" id="projects-spiral">
-      <div class="spiral-inner"></div>
-    </div>
-
+      <div class="projects-spiral" id="projects-spiral">
+        <div class="spiral-inner"></div>
+      </div>
     </section>
 
-      <!-- aquí irán tus proyectos, uno por uno -->
+  </div>
+
+  <!-- ============ PÁGINA: ABOUT ============ -->
+  <div class="page" id="page-about" data-page="about">
+    <section class="about">
+      <h2 class="section-title" data-i18n="about_title">Sobre mí</h2>
+
+      <div class="about-content">
+        <div class="about-photo"></div>
+
+        <div class="about-text">
+          <p data-i18n="about_p1">
+            Soy diseñador gráfico y motion designer, especializado en identidad de marca y animación.
+          </p>
+          <p data-i18n="about_p2">
+            Me interesa el detalle: cómo se mueve una interfaz, cómo respira una tipografía, cómo una idea simple se convierte en algo memorable.
+          </p>
+        </div>
+      </div>
     </section>
+  </div>
+
+  <!-- ============ PÁGINA: CONTACTO ============ -->
+  <div class="page" id="page-contacto" data-page="contacto">
+    <section class="contact">
+      <h2 class="section-title" data-i18n="contact_title">Contacto</h2>
+
+      <div class="contact-info">
+        <a href="mailto:tu@email.com" class="contact-email">tu@email.com</a>
+        <div class="contact-socials">
+          <a href="#" target="_blank">Instagram</a>
+          <a href="#" target="_blank">Behance</a>
+          <a href="#" target="_blank">LinkedIn</a>
+        </div>
+      </div>
+
+      <form class="contact-form">
+        <label for="name" data-i18n="form_name">Nombre</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email" data-i18n="form_email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="message" data-i18n="form_message">Mensaje</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+
+        <button type="submit" data-i18n="form_send">Enviar</button>
+      </form>
+    </section>
+  </div>
   </main>
 
   <script src="sketch.js"></script>
