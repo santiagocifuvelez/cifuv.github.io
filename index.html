@@ -11,6 +11,13 @@
   <!-- Botón de menú (abre el overlay a pantalla completa) -->
 <header class="topbar">
   <a href="#" class="logo">cifuvelez</a>
+
+  <div class="view-toggle">
+    <button class="view-btn active" data-view="spiral">spiral</button>
+    <span class="view-dot">•</span>
+    <button class="view-btn" data-view="list">list</button>
+  </div>
+
   <div class="topbar-actions">
     <button class="lang-btn" aria-label="Cambiar idioma">EN</button>
     <button class="theme-btn" aria-label="Cambiar tema">☾</button>
@@ -34,20 +41,10 @@
   <!-- ============ PÁGINA: WORKS (home) ============ -->
   <div class="page active" id="page-works" data-page="trabajos">
 
-    <section class="hero">
-      <h1 data-i18n="hero_title">Diseñador gráfico &amp; motion designer</h1>
-      <p class="hero-sub" data-i18n="hero_sub">Basado en [tu ciudad]</p>
-    </section>
-
     <section class="projects">
-      <div class="view-toggle">
-        <button class="view-btn active" data-view="spiral">spiral</button>
-        <button class="view-btn" data-view="list">list</button>
-      </div>
-
        <ul class="projects-list is-hidden">
         <li class="project-item">
-          <a href="#">
+          <a href="#" data-desc="Oskowampik, la tierra Dorada. Cortometraje realizado con motion capture." data-behance="https://www.behance.net/gallery/242598803/Oskowampik-la-tierra-Dorada">
             <div class="project-thumb"></div>
             <div class="project-info">
               <h3 data-i18n="p1_titulo">Proyecto Uno</h3>
@@ -57,7 +54,7 @@
         </li>
 
         <li class="project-item">
-          <a href="#">
+          <a href="#" data-desc="Los ecosistemas de Colombia, Ilustración y Animación." data-behance="https://www.behance.net/gallery/242599983/Los-ecosistemas-de-Colombia">
             <div class="project-thumb"></div>
             <div class="project-info">
               <h3 data-i18n="p2_titulo">Proyecto Dos</h3>
@@ -67,7 +64,7 @@
         </li>
 
         <li class="project-item">
-          <a href="#">
+          <a href="#" data-desc="Edufound, App UX/UI." data-behance="https://www.behance.net/gallery/241272553/Edufound">
             <div class="project-thumb"></div>
             <div class="project-info">
               <h3 data-i18n="p3_titulo">Proyecto Tres</h3>
@@ -77,7 +74,7 @@
         </li>
 
         <li class="project-item">
-          <a href="#">
+          <a href="#" data-desc="Un experimento visual y de branding, jugando con formas y color." data-behance="https://www.behance.net/">
             <div class="project-thumb"></div>
             <div class="project-info">
               <h3 data-i18n="p4_titulo">Proyecto Cuatro</h3>
@@ -120,7 +117,7 @@
       <h2 class="section-title" data-i18n="contact_title">Contacto</h2>
 
       <div class="contact-info">
-        <a href="mailto:tu@email.com" class="contact-email">tu@email.com</a>
+        <a href="santiagocifuvelez@gmail.com" class="contact-email">santiagocifuvelez@gmail.com</a>
         <div class="contact-socials">
           <a href="#" target="_blank">Instagram</a>
           <a href="#" target="_blank">Behance</a>
@@ -142,6 +139,22 @@
       </form>
     </section>
   </div>
+
+<div class="page" id="page-project" data-page="project">
+  <section class="project-detail">
+    <button class="back-btn" id="back-btn">← volver</button>
+
+    <h1 id="project-detail-title">Nombre del proyecto</h1>
+    <span class="project-detail-category" id="project-detail-category">Categoría</span>
+
+    <div class="project-detail-thumb" id="project-detail-thumb"></div>
+
+    <p id="project-detail-desc">Descripción del proyecto.</p>
+
+    <a href="#" class="behance-btn" id="behance-btn" target="_blank">ver el caso completo</a>
+  </section>
+</div>
+
   </main>
 
   <script src="sketch.js"></script>
