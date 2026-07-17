@@ -105,22 +105,60 @@ const spiralInner = document.querySelector('.spiral-inner');
 let spiralItems = []; // guarda cada miniatura junto con su ángulo "de origen"
 
 function buildSpiral() {
-  const total = projectItems.length;
+  const repeats = 4; // cuántas veces se repite cada proyecto
+  const originalCount = projectItems.length;
+  const total = originalCount * repeats;
   spiralItems = [];
 
-  const verticalSpacing = 130;
+  const verticalSpacing = 50;
+  const loops = 3; // cuántas vueltas completas da la hélice
 
-  projectItems.forEach((item, index) => {
-    const clone = item.cloneNode(true);
+  for (let i = 0; i < total; i++) {
+    const original = projectItems[i % originalCount]; // cicla entre tus 4 proyectos reales
+    const clone = original.cloneNode(true);
     clone.classList.add('spiral-item');
     clone.classList.remove('project-item');
+
+    const clonedLink = clone.querySelector('a');
+    if (clonedLink) clonedLink.removeAttribute('href');
+
+        // --- Cortamos la imagen en tiras y las curvamos, para simular una superficie 3D real ---
+    function buildSpiral() {
+      const repeats = 4;
+      const originalCount = projectItems.length;
+      const total = originalCount * repeats;
+      spiralItems = [];
+
+      const verticalSpacing = 40;
+      const loops = 3;
+
+      for (let i = 0; i < total; i++) {
+        const original = projectItems[i % originalCount];
+        const clone = original.cloneNode(true);
+        clone.classList.add('spiral-item');
+        clone.classList.remove('project-item');
+
+        const clonedLink = clone.querySelector('a');
+        if (clonedLink) clonedLink.removeAttribute('href');
+
+        spiralInner.appendChild(clone);
+
+        const baseAngle = (360 / total) * i * loops;
+        const yOffset = (i - (total - 1) / 2) * verticalSpacing;
+
+        spiralItems.push({ el: clone, baseAngle, yOffset });
+      }
+
+      renderSpiral(0);
+    }
+
     spiralInner.appendChild(clone);
 
-    const baseAngle = (360 / total) * index * 2;
-    const yOffset = (index - (total - 1) / 2) * verticalSpacing;
+    const baseAngle = (360 / total) * i * loops;
+    const yOffset = (i - (total - 1) / 2) * verticalSpacing;
 
     spiralItems.push({ el: clone, baseAngle, yOffset });
-  });
+  }
 
   renderSpiral(0);
 }
@@ -128,42 +166,52 @@ function buildSpiral() {
 let time = 0; // reloj interno que avanza solo, para el efecto de flotado
 
 function renderSpiral(rotation) {
-  const radius = 180;
+  const radius = 140;
 
-  spiralItems.forEach(({ el, baseAngle, yOffset }, index) => {
-    const angle = baseAngle + rotation;
+  spiralItems.forEach((item, index) => {
+    const angle = item.baseAngle + rotation;
     const radians = angle * (Math.PI / 180);
 
     const x = radius * Math.sin(radians);
     const z = radius * Math.cos(radians);
 
+    item.z = z; // guardamos la profundidad actual de este frame
+
     const depthRatio = (z + radius) / (2 * radius);
     const scale = 0.6 + depthRatio * 0.5;
     const opacity = 0.3 + depthRatio * 0.7;
 
-    // --- NUEVO: inclinación tipo abanico ---
-    const tiltX = Math.sin(radians) * 12; // se inclina más hacia los lados, derecho al centro
-
-    // --- NUEVO: flotado sutil, distinto por tarjeta (usamos el index para desincronizarlas) ---
+    const tiltX = Math.sin(radians) * 12;
     const floatOffset = Math.sin(time + index * 1.3) * 8;
     const floatTilt = Math.sin(time + index * 1.3) * 4;
 
-    el.style.transform =
-      `translate(-50%, -50%) translate3d(${x}px, ${yOffset + floatOffset}px, ${z}px) ` +
-      `rotateX(${tiltX + floatTilt}deg) scale(${scale})`;
-    el.style.opacity = opacity;
-    el.style.zIndex = Math.round(z);
+    const blurAmount = (1 - depthRatio) * 5; // más atrás = más blur
+    item.el.style.filter = `blur(${blurAmount}px)`;
+
+   item.el.style.transform =
+  `translate(-50%, -50%) translate3d(${x}px, ${item.yOffset + floatOffset}px, ${z}px) ` +
+  `rotateY(${angle}deg) rotateX(${tiltX + floatTilt}deg) scale(${scale})`;
+    item.el.style.opacity = opacity;
+    item.el.style.zIndex = Math.round(z);
   });
+
+  // --- Solo las 3 tarjetas más al frente pueden recibir clics ---
+  const sortedByDepth = [...spiralItems].sort((a, b) => b.z - a.z);
+  const frontThree = sortedByDepth.slice(0, 3);
+
+  spiralItems.forEach((item) => item.el.classList.remove('in-front'));
+  frontThree.forEach((item) => item.el.classList.add('in-front'));
 }
 
 // --- NUEVO: giro automático infinito ---
 const autoRotateSpeed = 0.15; // grados por frame, ajusta para más/menos velocidad
+let autoRotateDirection = 1; // 1 = derecha, -1 = izquierda
 
 function animate() {
-  time += 0.02; // qué tan rápido "respira" el flotado
+  time += 0.02;
 
   if (!isDragging) {
-    currentRotation += autoRotateSpeed;
+    currentRotation += autoRotateSpeed * autoRotateDirection;
   }
   renderSpiral(currentRotation);
   requestAnimationFrame(animate);
@@ -226,6 +274,12 @@ window.addEventListener('pointermove', (e) => {
 
 // 3. Cuando suelta (mouse o dedo), dejamos de arrastrar
 window.addEventListener('pointerup', () => {
+  if (isDragging) {
+    const netDelta = currentRotation - startRotation; // hacia dónde se movió en total este arrastre
+    if (netDelta !== 0) {
+      autoRotateDirection = netDelta > 0 ? 1 : -1;
+    }
+  }
   isDragging = false;
 });
 

@@ -286,6 +286,7 @@ a {
 
 .projects-list {
   list-style: none;
+  margin-top: 2rem;
 }
 
 .project-item {
@@ -303,7 +304,7 @@ a {
 
 .project-thumb {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
   background-color: #2a2a2a;
   margin-bottom: 0.8rem;
   overflow: hidden; /* nuevo: recorta lo que se sale */
@@ -331,6 +332,13 @@ a {
 .project-info span {
   font-size: 0.8rem;
   opacity: 0.5;
+}
+
+.project-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* ================================
@@ -408,6 +416,7 @@ a {
   display: block;
   perspective: 1000px;
   margin-top: 4rem;
+  touch-action: none;
 }
 
 .projects-spiral.active {
@@ -418,14 +427,20 @@ a {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 130px;
+  width: 170px;
   list-style: none;
   transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.spiral-item.in-front {
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .spiral-item .project-thumb {
   width: 100%;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 16 / 9;
   border-radius: 8px;   /* miniaturas circulares, look típico de spiral views */
   background-color: #2a2a2a;
   overflow: hidden;
