@@ -18,12 +18,14 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow-x: hidden;
+}
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-main);
   line-height: 1.4;
-  overflow-x: hidden;
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
