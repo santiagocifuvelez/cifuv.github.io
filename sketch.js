@@ -53,6 +53,16 @@ const translations = {
     p2_titulo: "Proyecto Dos", p2_cat: "Motion",
     p3_titulo: "Proyecto Tres", p3_cat: "Editorial",
     p4_titulo: "Proyecto Cuatro", p4_cat: "Identidad",
+
+    about_title: "Sobre mí",
+    about_p1: "¡Hola!, me llamo Santiago Cifuentes Vélez, y soy Ilustrator y diseñador integral. Casi siempre estoy jugando con siluetas, cables, y narrativas visuales en lienzos 2D y/o 3D, coloreando figuras y sonidos… ¿Cool, no?",
+    about_p2: "Me hace feliz compartir mi trabajo contigo. ¡Hugs!",
+
+    contact_title: "Contacto",
+    form_name: "Nombre",
+    form_email: "Email",
+    form_message: "Mensaje",
+    form_send: "Enviar",
   },
   en: {
     menu_trabajos: "work",
@@ -65,9 +75,18 @@ const translations = {
     p2_titulo: "Project Two", p2_cat: "Motion",
     p3_titulo: "Project Three", p3_cat: "Editorial",
     p4_titulo: "Project Four", p4_cat: "Identity",
+
+    about_title: "About",
+    about_p1: "Hi! My name is Santiago Cifuentes Vélez, and I'm an illustrator and full-stack designer. I'm almost always playing with silhouettes, wires, and visual narratives across 2D and/or 3D canvases, coloring shapes and sounds… Cool, right?",
+    about_p2: "It makes me happy to share my work with you. Hugs!",
+
+    contact_title: "Contact",
+    form_name: "Name",
+    form_email: "Email",
+    form_message: "Message",
+    form_send: "Send",
   }
 };
-
 // 2. Función que aplica el idioma elegido a toda la página
 function applyLanguage(lang) {
   // Buscamos TODOS los elementos que tengan data-i18n (no solo el primero)
@@ -80,6 +99,8 @@ function applyLanguage(lang) {
 
   document.documentElement.setAttribute('lang', lang);
   langBtn.textContent = lang === 'es' ? 'EN' : 'ES';
+  wrapWordsForScroll();
+  updateScrollHighlight();
   localStorage.setItem('lang', lang);
 }
 
@@ -104,17 +125,37 @@ const spiralInner = document.querySelector('.spiral-inner');
 
 let spiralItems = []; // guarda cada miniatura junto con su ángulo "de origen"
 
+// Generador de números "aleatorios" pero siempre iguales (con semilla fija)
+function seededRandom(seed) {
+  let value = Math.sin(seed) * 10000;
+  return value - Math.floor(value);
+}
+
 function buildSpiral() {
-  const repeats = 4; // cuántas veces se repite cada proyecto
+  const targetTotal = 16;
   const originalCount = projectItems.length;
+  const repeats = Math.max(2, Math.round(targetTotal / originalCount));
   const total = originalCount * repeats;
   spiralItems = [];
 
-  const verticalSpacing = 50;
-  const loops = 3; // cuántas vueltas completas da la hélice
+  const loops = 3;
+  const verticalSpacing = 800 / total;
+
+  // Construimos el orden barajado, usando semillas fijas (no Math.random)
+  const order = [];
+  for (let r = 0; r < repeats; r++) {
+    const cycle = Array.from({ length: originalCount }, (_, idx) => idx);
+
+    for (let a = cycle.length - 1; a > 0; a--) {
+      const b = Math.floor(seededRandom(r * 100 + a) * (a + 1));
+      [cycle[a], cycle[b]] = [cycle[b], cycle[a]];
+    }
+
+    order.push(...cycle);
+  }
 
   for (let i = 0; i < total; i++) {
-    const original = projectItems[i % originalCount]; // cicla entre tus 4 proyectos reales
+    const original = projectItems[order[i]];
     const clone = original.cloneNode(true);
     clone.classList.add('spiral-item');
     clone.classList.remove('project-item');
@@ -122,40 +163,13 @@ function buildSpiral() {
     const clonedLink = clone.querySelector('a');
     if (clonedLink) clonedLink.removeAttribute('href');
 
-        // --- Cortamos la imagen en tiras y las curvamos, para simular una superficie 3D real ---
-    function buildSpiral() {
-      const repeats = 4;
-      const originalCount = projectItems.length;
-      const total = originalCount * repeats;
-      spiralItems = [];
-
-      const verticalSpacing = 40;
-      const loops = 3;
-
-      for (let i = 0; i < total; i++) {
-        const original = projectItems[i % originalCount];
-        const clone = original.cloneNode(true);
-        clone.classList.add('spiral-item');
-        clone.classList.remove('project-item');
-
-        const clonedLink = clone.querySelector('a');
-        if (clonedLink) clonedLink.removeAttribute('href');
-
-        spiralInner.appendChild(clone);
-
-        const baseAngle = (360 / total) * i * loops;
-        const yOffset = (i - (total - 1) / 2) * verticalSpacing;
-
-        spiralItems.push({ el: clone, baseAngle, yOffset });
-      }
-
-      renderSpiral(0);
-    }
-
     spiralInner.appendChild(clone);
 
-    const baseAngle = (360 / total) * i * loops;
-    const yOffset = (i - (total - 1) / 2) * verticalSpacing;
+    const jitterAngle = seededRandom(i * 7.3) * 10 - 5;
+    const jitterY = seededRandom(i * 3.1 + 50) * 16 - 8;
+
+    const baseAngle = (360 / total) * i * loops + jitterAngle;
+    const yOffset = (i - (total - 1) / 2) * verticalSpacing + jitterY;
 
     spiralItems.push({ el: clone, baseAngle, yOffset });
   }
@@ -166,7 +180,7 @@ function buildSpiral() {
 let time = 0; // reloj interno que avanza solo, para el efecto de flotado
 
 function renderSpiral(rotation) {
-  const radius = 140;
+  const radius = 90 + projectItems.length * 6;
 
   spiralItems.forEach((item, index) => {
     const angle = item.baseAngle + rotation;
@@ -373,3 +387,43 @@ spiral.addEventListener('click', (e) => {
   }
   // Si dragDistance >= 6, no hacemos nada: fue un arrastre, ya se ocupó de eso el otro código
 });
+
+// ---------- SCROLL TEXT HIGHLIGHT (About) ----------
+
+function wrapWordsForScroll() {
+  const paragraphs = document.querySelectorAll('.scroll-text');
+
+  paragraphs.forEach((p) => {
+    const words = p.textContent.trim().split(/\s+/); // separa el texto por espacios
+    p.innerHTML = words
+      .map((word) => `<span class="word">${word}</span>`)
+      .join(' ');
+  });
+}
+
+function updateScrollHighlight() {
+  const wrapper = document.getElementById('scroll-text-wrapper');
+  if (!wrapper) return;
+
+  const rect = wrapper.getBoundingClientRect();
+  const scrollableDistance = wrapper.offsetHeight - window.innerHeight;
+
+  // progress: 0 al entrar al wrapper, 1 al llegar al final de su espacio de scroll
+  let progress = -rect.top / scrollableDistance;
+  progress = Math.max(0, Math.min(1, progress)); // lo mantenemos entre 0 y 1
+
+  const words = document.querySelectorAll('.scroll-text .word');
+  const activeCount = Math.floor(progress * words.length);
+
+  words.forEach((word, index) => {
+    if (index < activeCount) {
+      word.classList.add('lit');
+    } else {
+      word.classList.remove('lit');
+    }
+  });
+}
+window.addEventListener('scroll', updateScrollHighlight);
+
+wrapWordsForScroll();
+updateScrollHighlight();

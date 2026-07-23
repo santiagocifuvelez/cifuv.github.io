@@ -3,7 +3,7 @@
   --color-bg: #0e0e0e;
   --color-text: #f2f2f2;
   --color-accent: #ff5c35;
-  --font-main: 'Helvetica Neue', Arial, sans-serif;
+  --font-main: 'Poppins', sans-serif;
 }
 
 /* Cuando el <html> tenga data-theme="light", estas variables reemplazan a las de arriba */
@@ -143,7 +143,41 @@ a {
 
 /* ---------- ABOUT ---------- */
 .about {
-  padding: 5rem 1.2rem 4rem;
+  padding-top: 4rem;
+}
+
+.scroll-text-wrapper {
+  position: relative;
+  height: 250vh; /* mucho más alto que la pantalla: aquí "vive" el espacio de scroll */
+}
+
+.scroll-text-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 1.2rem;
+}
+
+.scroll-text {
+  font-family: var(--font-main);
+  font-size: 1.4rem;
+  line-height: 1.6;
+  font-weight: 500;
+  max-width: 700px;
+  margin-bottom: 1.5rem;
+  color: var(--color-text);
+}
+
+.scroll-text .word {
+  opacity: 0.2;
+  transition: opacity 0.15s ease;
+}
+
+.scroll-text .word.lit {
+  opacity: 1;
 }
 
 .about-content {

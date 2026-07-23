@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>cifuvelez ✲ Portafolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -46,7 +48,7 @@
         <li class="project-item">
           <a href="#" data-desc="Oskowampik, la tierra Dorada. Cortometraje realizado con motion capture." data-behance="https://www.behance.net/gallery/242598803/Oskowampik-la-tierra-Dorada">
             <div class="project-thumb">
-              <img src="assets/images/oskowampik.jpg" alt="Oskowampik, La Tierra Dorada">
+              <img src="assets/portadas/oskowampik.jpg" alt="Oskowampik, La Tierra Dorada">
             </div>
             <div class="project-info">
               <h3 data-i18n="p1_titulo">Proyecto Uno</h3>
@@ -58,7 +60,7 @@
         <li class="project-item">
           <a href="#" data-desc="Los ecosistemas de Colombia, Ilustración y Animación." data-behance="https://www.behance.net/gallery/242599983/Los-ecosistemas-de-Colombia">
             <div class="project-thumb">
-              <img src="assets/images/ecosistemas.jpg" alt="Ecosistemas de Colombia">
+              <img src="assets/portadas/ecosistemas.jpg" alt="Ecosistemas de Colombia">
             </div>
             <div class="project-info">
               <h3 data-i18n="p2_titulo">Proyecto Dos</h3>
@@ -70,7 +72,7 @@
         <li class="project-item">
           <a href="#" data-desc="Edufound, App UX/UI." data-behance="https://www.behance.net/gallery/241272553/Edufound">
             <div class="project-thumb">
-              <img src="assets/images/edufound.png" alt="Edufound, app de becas">
+              <img src="assets/portadas/edufound.png" alt="Edufound, app de becas">
             </div>
             <div class="project-info">
               <h3 data-i18n="p3_titulo">Proyecto Tres</h3>
@@ -82,7 +84,7 @@
         <li class="project-item">
           <a href="#" data-desc="Un experimento visual y de branding, jugando con formas y color." data-behance="https://www.behance.net/">
             <div class="project-thumb">
-              <img src="assets/images/vbg.jpg" alt="Portada de presentación de proyecto de violencias basadas en género">
+              <img src="assets/portadas/vbg.jpg" alt="Portada de presentación de proyecto de violencias basadas en género">
             </div>
             <div class="project-info">
               <h3 data-i18n="p4_titulo">Proyecto Cuatro</h3>
@@ -90,7 +92,20 @@
             </div>
           </a>
         </li>
-      </ul>
+
+         <li class="project-item">
+        <a href="#" data-desc="Mi primer sintetizador de música." data-behance="https://www.behance.net/">
+          <div class="project-thumb">
+            <img src="assets/portadas/sinte-precarias.jpg" alt="Precarias">
+          </div>
+          <div class="project-info">
+            <h3 data-i18n="p5_titulo">Precarias</h3>
+            <span data-i18n="p5_cat">Sintetizador de música experimental</span>
+          </div>
+        </a>
+      </li>
+    </ul>
+
 
       <div class="projects-spiral" id="projects-spiral">
         <div class="spiral-inner"></div>
@@ -101,22 +116,18 @@
 
   <!-- ============ PÁGINA: ABOUT ============ -->
   <div class="page" id="page-about" data-page="about">
-    <section class="about">
-      <h2 class="section-title" data-i18n="about_title">Sobre mí</h2>
-
-      <div class="about-content">
-        <div class="about-photo"></div>
-
-        <div class="about-text">
-          <p data-i18n="about_p1">
-            Soy diseñador gráfico y motion designer, especializado en identidad de marca y animación.
-          </p>
-          <p data-i18n="about_p2">
-            Me interesa el detalle: cómo se mueve una interfaz, cómo respira una tipografía, cómo una idea simple se convierte en algo memorable.
-          </p>
-        </div>
+   <section class="about">
+    <div class="scroll-text-wrapper" id="scroll-text-wrapper">
+      <div class="scroll-text-sticky">
+        <p class="scroll-text" data-i18n="about_p1">
+          Soy diseñador gráfico y motion designer, especializado en identidad de marca y animación.
+        </p>
+        <p class="scroll-text" data-i18n="about_p2">
+          Me interesa el detalle: cómo se mueve una interfaz, cómo respira una tipografía, cómo una idea simple se convierte en algo memorable.
+        </p>
       </div>
-    </section>
+    </div>
+  </section>
   </div>
 
   <!-- ============ PÁGINA: CONTACTO ============ -->
