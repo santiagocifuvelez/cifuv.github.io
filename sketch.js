@@ -424,8 +424,11 @@ function updateScrollHighlight() {
   });
 }
 
-window.addEventListener('scroll', updateScrollHighlight, { passive: true });
-document.addEventListener('scroll', updateScrollHighlight, { passive: true });
+function scrollLoop() {
+  updateScrollHighlight();
+  requestAnimationFrame(scrollLoop);
+}
+scrollLoop();
 
 wrapWordsForScroll();
 updateScrollHighlight();

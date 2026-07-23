@@ -150,13 +150,15 @@ a {
 
 .scroll-text-wrapper {
   position: relative;
-  height: 250vh; /* mucho más alto que la pantalla: aquí "vive" el espacio de scroll */
+  height: 250vh;
+  height: 250dvh;
 }
 
 .scroll-text-sticky {
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
