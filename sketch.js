@@ -304,8 +304,9 @@ animate();
 const navLinks = document.querySelectorAll('.menu-links [data-page]');
 const pages = document.querySelectorAll('.page');
 
+const viewToggleEl = document.querySelector('.view-toggle');
+
 function goToPage(pageName) {
-  // 1. Ocultamos todas las páginas, mostramos solo la que coincide
   pages.forEach((page) => {
     if (page.getAttribute('data-page') === pageName) {
       page.classList.add('active');
@@ -314,7 +315,13 @@ function goToPage(pageName) {
     }
   });
 
-  // 2. Llevamos el scroll arriba del todo, como una página nueva de verdad
+  // El toggle spiral/list solo se muestra en la página de trabajos
+  if (pageName === 'trabajos') {
+    viewToggleEl.classList.remove('is-hidden');
+  } else {
+    viewToggleEl.classList.add('is-hidden');
+  }
+
   window.scrollTo(0, 0);
 }
 
@@ -334,30 +341,22 @@ navLinks.forEach((link) => {
 const projectDetailTitle = document.getElementById('project-detail-title');
 const projectDetailCategory = document.getElementById('project-detail-category');
 const projectDetailDesc = document.getElementById('project-detail-desc');
-const projectDetailGallery = document.getElementById('project-detail-gallery');
+const projectVideoIframe = document.getElementById('project-video-iframe');
+const caseBtn = document.getElementById('case-btn');
 const backBtn = document.getElementById('back-btn');
 
 function openProject(linkEl) {
-  const projectItem = linkEl.closest('li'); // el <li> completo, para llegar a su galería
   const title = linkEl.querySelector('h3').textContent;
   const category = linkEl.querySelector('span').textContent;
   const desc = linkEl.getAttribute('data-desc');
+  const videoUrl = linkEl.getAttribute('data-video');
+  const behanceUrl = linkEl.getAttribute('data-behance');
 
   projectDetailTitle.textContent = title;
   projectDetailCategory.textContent = category;
   projectDetailDesc.textContent = desc;
-
-  // Vaciamos la galería anterior, y copiamos las imágenes del proyecto actual
-  projectDetailGallery.innerHTML = '';
-  const gallerySource = projectItem.querySelector('.project-gallery');
-
-  if (gallerySource) {
-    const images = gallerySource.querySelectorAll('img');
-    images.forEach((img) => {
-      const clone = img.cloneNode(true);
-      projectDetailGallery.appendChild(clone);
-    });
-  }
+  projectVideoIframe.src = videoUrl;
+  caseBtn.setAttribute('href', behanceUrl);
 
   goToPage('project');
 }
