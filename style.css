@@ -524,6 +524,44 @@ a {
   padding-right: 1.2rem;
 }
 
+.project-video-wrapper {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 2rem;
+  background-color: #000;
+}
+
+.project-video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
+
+.case-btn {
+  display: block;
+  width: fit-content;
+  margin: 0 1.2rem 3rem;
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  border: none;
+  padding: 0.9rem 1.8rem;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.case-btn:hover {
+  opacity: 0.8;
+}
+
 .back-btn {
   background: none;
   border: none;
