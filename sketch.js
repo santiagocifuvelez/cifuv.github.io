@@ -334,19 +334,30 @@ navLinks.forEach((link) => {
 const projectDetailTitle = document.getElementById('project-detail-title');
 const projectDetailCategory = document.getElementById('project-detail-category');
 const projectDetailDesc = document.getElementById('project-detail-desc');
-const behanceBtn = document.getElementById('behance-btn');
+const projectDetailGallery = document.getElementById('project-detail-gallery');
 const backBtn = document.getElementById('back-btn');
 
 function openProject(linkEl) {
+  const projectItem = linkEl.closest('li'); // el <li> completo, para llegar a su galería
   const title = linkEl.querySelector('h3').textContent;
   const category = linkEl.querySelector('span').textContent;
   const desc = linkEl.getAttribute('data-desc');
-  const behanceUrl = linkEl.getAttribute('data-behance');
 
   projectDetailTitle.textContent = title;
   projectDetailCategory.textContent = category;
   projectDetailDesc.textContent = desc;
-  behanceBtn.setAttribute('href', behanceUrl);
+
+  // Vaciamos la galería anterior, y copiamos las imágenes del proyecto actual
+  projectDetailGallery.innerHTML = '';
+  const gallerySource = projectItem.querySelector('.project-gallery');
+
+  if (gallerySource) {
+    const images = gallerySource.querySelectorAll('img');
+    images.forEach((img) => {
+      const clone = img.cloneNode(true);
+      projectDetailGallery.appendChild(clone);
+    });
+  }
 
   goToPage('project');
 }

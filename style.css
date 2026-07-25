@@ -544,32 +544,22 @@ a {
   margin-bottom: 1.5rem;
 }
 
-.project-detail-thumb {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background-color: #2a2a2a;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-}
-
 .project-detail p {
   font-size: 1rem;
   line-height: 1.6;
   opacity: 0.85;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   max-width: 600px;
 }
 
-.behance-btn {
-  display: inline-block;
-  background-color: var(--color-text);
-  color: var(--color-bg);
-  padding: 0.8rem 1.6rem;
-  border-radius: 30px;
-  font-size: 0.9rem;
-  transition: opacity 0.3s ease;
+.project-detail-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
-.behance-btn:hover {
-  opacity: 0.8;
+.project-detail-gallery img {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
 }
