@@ -306,6 +306,8 @@ const pages = document.querySelectorAll('.page');
 
 const viewToggleEl = document.querySelector('.view-toggle');
 
+const topbarEl = document.querySelector('.topbar');
+
 function goToPage(pageName) {
   pages.forEach((page) => {
     if (page.getAttribute('data-page') === pageName) {
@@ -320,6 +322,13 @@ function goToPage(pageName) {
     viewToggleEl.classList.remove('is-hidden');
   } else {
     viewToggleEl.classList.add('is-hidden');
+  }
+
+  // La topbar completa se oculta solo dentro de la página de un proyecto
+  if (pageName === 'project') {
+    topbarEl.classList.add('is-hidden');
+  } else {
+    topbarEl.classList.remove('is-hidden');
   }
 
   window.scrollTo(0, 0);
@@ -343,14 +352,16 @@ const projectDetailCategory = document.getElementById('project-detail-category')
 const projectDetailDesc = document.getElementById('project-detail-desc');
 const projectVideoIframe = document.getElementById('project-video-iframe');
 const caseBtn = document.getElementById('case-btn');
-const backBtn = document.getElementById('back-btn');
+const closeBtnProject = document.getElementById('project-close-btn');
 
 function openProject(linkEl) {
+  const projectItem = linkEl.closest('li');
   const title = linkEl.querySelector('h3').textContent;
   const category = linkEl.querySelector('span').textContent;
   const desc = linkEl.getAttribute('data-desc');
   const videoUrl = linkEl.getAttribute('data-video');
   const behanceUrl = linkEl.getAttribute('data-behance');
+  const toolsRaw = linkEl.getAttribute('data-tools') || '';
 
   projectDetailTitle.textContent = title;
   projectDetailCategory.textContent = category;
@@ -358,11 +369,34 @@ function openProject(linkEl) {
   projectVideoIframe.src = videoUrl;
   caseBtn.setAttribute('href', behanceUrl);
 
+  // Armamos las burbujas de programas usados
+  const projectTools = document.getElementById('project-tools');
+  projectTools.innerHTML = '';
+  const toolsList = toolsRaw.split(',').map((t) => t.trim()).filter(Boolean);
+  toolsList.forEach((tool) => {
+    const bubble = document.createElement('span');
+    bubble.classList.add('tool-bubble');
+    bubble.textContent = tool;
+    projectTools.appendChild(bubble);
+  });
+
+  // Copiamos las imágenes/tomas del proyecto, si tiene
+  const projectDetailGallery = document.getElementById('project-detail-gallery');
+  projectDetailGallery.innerHTML = '';
+  const gallerySource = projectItem.querySelector('.project-gallery');
+  if (gallerySource) {
+    const images = gallerySource.querySelectorAll('img');
+    images.forEach((img) => {
+      const clone = img.cloneNode(true);
+      projectDetailGallery.appendChild(clone);
+    });
+  }
+
   goToPage('project');
 }
 
 // Botón "volver"
-backBtn.addEventListener('click', () => {
+closeBtnProject.addEventListener('click', () => {
   goToPage('trabajos');
 });
 

@@ -46,7 +46,7 @@
     <section class="projects">
       <ul class="projects-list is-hidden">
   <li class="project-item">
-    <a href="#" data-desc="Descripción corta de Oskowampik." data-video="https://www.youtube.com/embed/TU_VIDEO_ID" data-behance="https://www.behance.net/gallery/242598803/Oskowampik-la-tierra-Dorada">
+    <a href="#" data-desc="Descripción corta de Oskowampik." data-video="https://www.youtube.com/embed/TU_VIDEO_ID" data-behance="https://www.behance.net/gallery/242598803/Oskowampik-la-tierra-Dorada" data-tools="Blender, After Effects, Photoshop">
       <div class="project-thumb">
         <img src="assets/portadas/oskowampik.jpg" alt="Oskowampik, La Tierra Dorada">
       </div>
@@ -55,10 +55,14 @@
         <span>Animación 3D</span>
       </div>
     </a>
+    <div class="project-gallery" hidden>
+    <img src="assets/oskowampik/toma1.jpg" alt="Oskowampik, toma 1">
+    <img src="assets/oskowampik/toma2.jpg" alt="Oskowampik, toma 2">
+  </div>
   </li>
 
   <li class="project-item">
-    <a href="#" data-desc="Edufound, App UX/UI." data-video="https://www.youtube.com/embed/TU_VIDEO_ID" data-behance="https://www.behance.net/gallery/241272553/Edufound">
+    <a href="#" data-desc="Edufound, App UX/UI." data-video="https://www.youtube.com/embed/TU_VIDEO_ID" data-behance="https://www.behance.net/gallery/241272553/Edufound" data-tools="Figma, Adobe XD">
       <div class="project-thumb">
         <img src="assets/portadas/edufound.png" alt="Edufound, app de becas">
       </div>
@@ -67,10 +71,16 @@
         <span>UX/UI Design</span>
       </div>
     </a>
+
+    <div class="project-gallery" hidden>
+      <img src="assets/edufound/toma1.png" alt="Edufound, toma 1">
+      <img src="assets/edufound/toma2.png" alt="Edufound, toma 2">
+    </div>
+
   </li>
 
   <li class="project-item">
-    <a href="#" data-desc="Descripción corta de Ecosistemas de Colombia." data-video="https://player.vimeo.com/video/1156733165?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" data-behance="https://www.behance.net/gallery/242599983/Los-ecosistemas-de-Colombia">
+    <a href="#" data-desc="Descripción corta de Ecosistemas de Colombia." data-video="https://player.vimeo.com/video/1156733165?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" data-behance="https://www.behance.net/gallery/242599983/Los-ecosistemas-de-Colombia" data-tools="Blender, After Effects, Photoshop">
       <div class="project-thumb">
         <img src="assets/portadas/ecosistemas.jpg" alt="Ecosistemas de Colombia">
       </div>
@@ -79,10 +89,16 @@
         <span>Ilustración - Animación</span>
       </div>
     </a>
+
+    <div class="project-gallery" hidden>
+      <img src="assets/ecosistemas/toma1.jpg" alt="Ecosistemas de Colombia, toma 1">
+      <img src="assets/ecosistemas/toma2.jpg" alt="Ecosistemas de Colombia, toma 2">
+    </div>
+
   </li>
 
   <li class="project-item">
-    <a href="#" data-desc="Descripción corta de Precarias." data-video="https://www.youtube.com/embed/TU_VIDEO_ID" data-behance="https://www.behance.net/gallery/TU-PROYECTO">
+    <a href="#" data-desc="Descripción corta de Precarias." data-video="https://www.youtube.com/embed/TU_VIDEO_ID" data-behance="https://www.behance.net/gallery/TU-PROYECTO" data-tools="Blender, After Effects, Photoshop">
       <div class="project-thumb">
         <img src="assets/portadas/sinte-precarias.jpg" alt="Precarias">
       </div>
@@ -91,6 +107,12 @@
         <span>Sintetizador de música experimental</span>
       </div>
     </a>
+
+    <div class="project-gallery" hidden>
+      <img src="assets/edufound/toma1.png" alt="Edufound, toma 1">
+      <img src="assets/edufound/toma2.png" alt="Edufound, toma 2">
+    </div>
+
   </li>
 
   <li class="project-item">
@@ -103,6 +125,12 @@
         <span data-i18n="p4_cat">Portada de presentación Violencias basadas en género</span>
       </div>
     </a>
+
+   <div class="project-gallery" hidden>
+      <img src="assets/edufound/toma1.png" alt="Edufound, toma 1">
+      <img src="assets/edufound/toma2.png" alt="Edufound, toma 2">
+    </div>
+
   </li>
 </ul>
 
@@ -161,13 +189,9 @@
 
 <div class="page" id="page-project" data-page="project">
   <section class="project-detail">
-    <button class="back-btn" id="back-btn">← volver</button>
-
-    <h1 id="project-detail-title">Nombre del proyecto</h1>
-    <span class="project-detail-category" id="project-detail-category">Categoría</span>
-    <p id="project-detail-desc">Descripción del proyecto.</p>
 
     <div class="project-video-wrapper" id="project-video-wrapper">
+      <button class="project-close-btn" id="project-close-btn" aria-label="Cerrar">✕</button>
       <iframe
         id="project-video-iframe"
         src=""
@@ -177,7 +201,22 @@
       </iframe>
     </div>
 
-    <a href="#" class="case-btn" id="case-btn" target="_blank">ver caso completo</a>
+    <div class="project-detail-text">
+      <h1 id="project-detail-title">Nombre del proyecto</h1>
+      <span class="project-detail-category" id="project-detail-category">Categoría</span>
+      <p id="project-detail-desc">Descripción del proyecto.</p>
+
+      <div class="project-tools" id="project-tools">
+        <!-- aquí JS agrega las burbujas de programas usados -->
+      </div>
+
+      <a href="#" class="case-btn" id="case-btn" target="_blank">ver caso completo</a>
+    </div>
+
+    <div class="project-detail-gallery" id="project-detail-gallery">
+      <!-- aquí JS copia imágenes/tomas del proyecto, si las agregaste -->
+    </div>
+
   </section>
 </div>
 

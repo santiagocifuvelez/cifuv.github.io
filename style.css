@@ -512,9 +512,17 @@ a {
 }
 
 /* ---------- DETALLE DE PROYECTO ---------- */
+.page[data-page="project"] {
+  background-color: #000;
+  min-height: 100vh;
+  padding: 1rem 0.75rem;
+}
+
 .project-detail {
-  padding-top: 5rem;
-  padding-bottom: 4rem;
+  position: relative;
+  background-color: var(--color-bg);
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .project-detail h1,
@@ -525,12 +533,8 @@ a {
 }
 
 .project-video-wrapper {
-  width: 100vw;
+  width: 100%;
   position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
   aspect-ratio: 16 / 9;
   margin-bottom: 2rem;
   background-color: #000;
@@ -562,19 +566,31 @@ a {
   opacity: 0.8;
 }
 
-.back-btn {
-  background: none;
-  border: none;
-  color: var(--color-text);
-  opacity: 0.6;
-  font-size: 0.85rem;
-  cursor: pointer;
-  margin-bottom: 2rem;
-  transition: opacity 0.3s ease;
+.project-detail-text {
+  padding: 2rem 1.2rem 0;
 }
 
-.back-btn:hover {
-  opacity: 1;
+.project-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.project-close-btn:hover {
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
 .project-detail h1 {
@@ -586,23 +602,41 @@ a {
   display: block;
   font-size: 0.85rem;
   opacity: 0.5;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .project-detail p {
   font-size: 1rem;
   line-height: 1.6;
   opacity: 0.85;
-  margin-bottom: 2.5rem;
   max-width: 600px;
+  margin-bottom: 1.5rem;
+}
+
+.project-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+
+.tool-bubble {
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  border-radius: 30px;
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  opacity: 0.8;
 }
 
 .project-detail-gallery {
   display: flex;
   flex-direction: column;
+  gap: 1.2rem;
+  padding: 3rem 1.2rem 4rem;
 }
 
 .project-detail-gallery img {
   width: 100%;
+  border-radius: 12px;
   display: block;
 }
