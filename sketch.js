@@ -195,16 +195,15 @@ function renderSpiral(rotation) {
     const scale = 0.6 + depthRatio * 0.5;
     const opacity = 0.3 + depthRatio * 0.7;
 
-    const tiltX = Math.sin(radians) * 12;
     const floatOffset = Math.sin(time + index * 1.3) * 8;
     const floatTilt = Math.sin(time + index * 1.3) * 4;
 
     const blurAmount = (1 - depthRatio) * 5; // más atrás = más blur
     item.el.style.filter = `blur(${blurAmount}px)`;
 
-   item.el.style.transform =
-  `translate(-50%, -50%) translate3d(${x}px, ${item.yOffset + floatOffset}px, ${z}px) ` +
-  `rotateY(${angle}deg) rotateX(${tiltX + floatTilt}deg) scale(${scale})`;
+    item.el.style.transform =
+      `translate(-50%, -50%) translate3d(${x}px, ${item.yOffset + floatOffset}px, ${z}px) ` +
+      `rotateX(${floatTilt}deg) scale(${scale})`;
     item.el.style.opacity = opacity;
     item.el.style.zIndex = Math.round(z);
   });
