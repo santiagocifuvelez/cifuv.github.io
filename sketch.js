@@ -180,7 +180,8 @@ function buildSpiral() {
 let time = 0; // reloj interno que avanza solo, para el efecto de flotado
 
 function renderSpiral(rotation) {
-  const radius = 90 + projectItems.length * 6;
+  const baseRadius = 90 + projectItems.length * 6;
+  const radius = baseRadius * (1 + dragBoost * 0.30); // expands up to 30% while dragging
 
   spiralItems.forEach((item, index) => {
     const angle = item.baseAngle + rotation;
@@ -192,7 +193,7 @@ function renderSpiral(rotation) {
     item.z = z; // guardamos la profundidad actual de este frame
 
     const depthRatio = (z + radius) / (2 * radius);
-    const scale = 0.6 + depthRatio * 0.5;
+    const scale = (0.6 + depthRatio * 0.5) * (1 + dragBoost * 0.08); // micro-zoom up to 8%
     const opacity = 0.3 + depthRatio * 0.7;
 
     const floatOffset = Math.sin(time + index * 1.3) * 8;
@@ -220,15 +221,25 @@ function renderSpiral(rotation) {
 const autoRotateSpeed = 0.15; // grados por frame, ajusta para más/menos velocidad
 let autoRotateDirection = 1; // 1 = derecha, -1 = izquierda
 
+
+
+let dragBoost = 0; // 0 = normal, 1 = fully expanded/zoomed
+
 function animate() {
   time += 0.02;
 
   if (!isDragging) {
     currentRotation += autoRotateSpeed * autoRotateDirection;
   }
+
+  const targetBoost = isDragging ? 1 : 0;
+  dragBoost += (targetBoost - dragBoost) * 0.08; // smoothly eases toward the target each frame
+
   renderSpiral(currentRotation);
   requestAnimationFrame(animate);
 }
+
+
 
 // Seleccionamos los botones de vista y los dos contenedores
 const viewBtns = document.querySelectorAll('.view-btn');

@@ -342,6 +342,7 @@ a {
   background-color: #2a2a2a;
   margin-bottom: 0.8rem;
   overflow: hidden; /* nuevo: recorta lo que se sale */
+  border-radius: 8px;
 }
 
 .project-item a:hover .project-thumb {
