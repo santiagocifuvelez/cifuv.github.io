@@ -1,0 +1,642 @@
+/* ---------- RESET Y VARIABLES ---------- */
+:root {
+  --color-bg: #0e0e0e;
+  --color-text: #f2f2f2;
+  --color-accent: #ff5c35;
+  --font-main: 'Poppins', sans-serif;
+}
+
+/* Cuando el <html> tenga data-theme="light", estas variables reemplazan a las de arriba */
+[data-theme="light"] {
+  --color-bg: #f4f4f2;
+  --color-text: #12120f;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+}
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  line-height: 1.4;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+/* ---------- TOPBAR ---------- */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  z-index: 100;
+}
+
+.theme-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.logo {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-transform: lowercase;
+}
+
+/* ---------- MENU OVERLAY ---------- */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1.5rem;
+  z-index: 200;
+
+  /* Estado oculto por defecto */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+}
+
+.menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-transform: lowercase;
+}
+
+.menu-links {
+  list-style: none;
+}
+
+.menu-links li {
+  margin-bottom: 0.8rem;
+}
+
+.menu-links a {
+  font-size: 2rem;
+  text-transform: lowercase;
+}
+.menu-links a {
+  position: relative;
+  display: inline-block;
+  transition: opacity 0.3s ease;
+}
+
+.menu-links a:hover {
+  opacity: 0.5;
+}
+
+/* ---------- ABOUT ---------- */
+.about {
+  padding-top: 4rem;
+}
+
+.scroll-text-wrapper {
+  position: relative;
+  height: 250vh;
+  height: 250dvh;
+}
+
+.scroll-text-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 1.2rem;
+}
+
+.scroll-text {
+  font-family: var(--font-main);
+  font-size: 1.4rem;
+  line-height: 1.6;
+  font-weight: 500;
+  max-width: 700px;
+  margin-bottom: 1.5rem;
+  color: var(--color-text);
+}
+
+.scroll-text .word {
+  opacity: 0.2;
+  transition: opacity 0.15s ease;
+}
+
+.scroll-text .word.lit {
+  opacity: 1;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.about-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+}
+
+.about-text p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  opacity: 0.85;
+}
+
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- CONTACTO ---------- */
+.contact {
+  padding: 5rem 1.2rem 4rem;
+}
+
+.contact-info {
+  margin-bottom: 2.5rem;
+}
+
+.contact-email {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.contact-socials {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.contact-socials a {
+  font-size: 0.9rem;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.contact-socials a:hover {
+  opacity: 1;
+}
+
+/* --- Formulario --- */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 500px;
+}
+
+.contact-form label {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  text-transform: lowercase;
+}
+
+.contact-form input,
+.contact-form textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-size: 1rem;
+  padding: 0.6rem 0;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--color-accent);
+}
+
+.contact-form button {
+  align-self: flex-start;
+  background: none;
+  border: 1px solid var(--color-text);
+  color: var(--color-text);
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-transform: lowercase;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.contact-form button:hover {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem 1.2rem 2rem;
+}
+
+.hero h1 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 0.8rem;
+}
+
+.hero-sub {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* ---------- PROYECTOS ---------- */
+.projects {
+  padding: 1rem 1.2rem 4rem;
+}
+
+.section-title {
+  font-size: 0.9rem;
+  text-transform: lowercase;
+  opacity: 0.6;
+  margin-bottom: 1.5rem;
+}
+
+.projects-list {
+  list-style: none;
+  margin-top: 2rem;
+}
+
+.project-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.project-item:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.project-item a {
+  display: block;
+  padding: 1.2rem 0;
+}
+
+.project-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: #2a2a2a;
+  margin-bottom: 0.8rem;
+  overflow: hidden; /* nuevo: recorta lo que se sale */
+}
+
+.project-item a:hover .project-thumb {
+  transform: scale(1.03);
+}
+
+.project-thumb {
+  transition: transform 0.5s ease;
+}
+
+.project-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.project-info h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.project-info span {
+  font-size: 0.8rem;
+  opacity: 0.5;
+}
+
+.project-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ================================
+   DESKTOP / TABLET (min-width: 768px)
+   ================================ */
+
+@media (min-width: 768px) {
+
+  .topbar {
+    padding: 1.5rem 2.5rem;
+  }
+
+  .hero {
+    padding: 8rem 2.5rem 3rem;
+  }
+
+  .hero h1 {
+    font-size: 3.2rem;
+    max-width: 900px;
+  }
+
+  .projects {
+    padding: 3rem 2.5rem 6rem;
+  }
+
+  .projects-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .project-item {
+    border-top: none;
+  }
+
+  .project-item:last-child {
+    border-bottom: none;
+  }
+
+}
+
+/* ---------- VIEW TOGGLE ---------- */
+.view-toggle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.view-dot {
+  font-size: 0.6rem;
+  opacity: 0.4;
+}
+
+.view-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  opacity: 0.4;
+  font-size: 0.85rem;
+  text-transform: lowercase;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.view-btn.active {
+  opacity: 1;
+}
+
+/* ---------- SPIRAL ---------- */
+.projects-spiral {
+  position: relative;
+  width: 100%;
+  height: 700px;
+  display: block;
+  perspective: 1000px;
+  margin-top: 4rem;
+  touch-action: none;
+}
+
+.projects-spiral.active {
+  display: block;
+}
+
+.spiral-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 170px;
+  list-style: none;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.spiral-item.in-front {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.spiral-item .project-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;   /* miniaturas circulares, look típico de spiral views */
+  background-color: #2a2a2a;
+  overflow: hidden;
+}
+
+.spiral-item .project-info {
+  display: none;        /* en la espiral no mostramos texto, solo al hacer click/hover */
+}
+
+.spiral-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.1s linear;
+}
+
+/* ---------- UTILIDAD ---------- */
+.is-hidden {
+  display: none !important;
+}
+
+/* ---------- SISTEMA DE PÁGINAS ---------- */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* ---------- DETALLE DE PROYECTO ---------- */
+.page[data-page="project"] {
+  background-color: #000;
+  min-height: 100vh;
+  padding: 1rem 0.75rem;
+}
+
+.project-detail {
+  position: relative;
+  background-color: var(--color-bg);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.project-detail h1,
+.project-detail-category,
+.project-detail p {
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+}
+
+.project-video-wrapper {
+  width: 100%;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 2rem;
+  background-color: #000;
+}
+
+.project-video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
+
+.case-btn {
+  display: block;
+  width: fit-content;
+  margin: 0 1.2rem 3rem;
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  border: none;
+  padding: 0.9rem 1.8rem;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.case-btn:hover {
+  opacity: 0.8;
+}
+
+.project-detail-text {
+  padding: 2rem 1.2rem 0;
+}
+
+.project-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.project-close-btn:hover {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.project-detail h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.project-detail-category {
+  display: block;
+  font-size: 0.85rem;
+  opacity: 0.5;
+  margin-bottom: 1.2rem;
+}
+
+.project-detail p {
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.85;
+  max-width: 600px;
+  margin-bottom: 1.5rem;
+}
+
+.project-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+
+.tool-bubble {
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  border-radius: 30px;
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.project-detail-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 3rem 1.2rem 4rem;
+}
+
+.project-detail-gallery img {
+  width: 100%;
+  border-radius: 12px;
+  display: block;
+}
