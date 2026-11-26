@@ -54,6 +54,11 @@ const translations = {
     p3_titulo: "Proyecto Tres", p3_cat: "Editorial",
     p4_titulo: "Proyecto Cuatro", p4_cat: "Identidad",
 
+    cat_electronica: "electrónica",
+    cat_ceramica: "cerámica",
+    cat_diseno: "diseño gráfico",
+    cat_grado: "proyecto de grado",
+
     about_title: "Sobre mí",
     about_p1: "¡Hola!, me llamo Santiago Cifuentes Vélez, y soy Ilustrator y diseñador integral. Casi siempre estoy jugando con siluetas, cables, y narrativas visuales en lienzos 2D y/o 3D, coloreando figuras y sonidos… ¿Cool, no?",
     about_p2: "Me hace feliz compartir mi trabajo contigo. ¡Hugs!",
@@ -76,6 +81,11 @@ const translations = {
     p3_titulo: "Project Three", p3_cat: "Editorial",
     p4_titulo: "Project Four", p4_cat: "Identity",
 
+    cat_electronica: "electronics",
+    cat_ceramica: "ceramics",
+    cat_diseno: "graphic design",
+    cat_grado: "thesis project",
+
     about_title: "About",
     about_p1: "Hi! My name is Santiago Cifuentes Vélez, and I'm an illustrator and full-stack designer. I'm almost always playing with silhouettes, wires, and visual narratives across 2D and/or 3D canvases, coloring shapes and sounds… Cool, right?",
     about_p2: "It makes me happy to share my work with you. Hugs!",
@@ -87,6 +97,7 @@ const translations = {
     form_send: "Send",
   }
 };
+
 // 2. Función que aplica el idioma elegido a toda la página
 function applyLanguage(lang) {
   // Buscamos TODOS los elementos que tengan data-i18n (no solo el primero)
@@ -125,10 +136,56 @@ const spiralInner = document.querySelector('.spiral-inner');
 
 let spiralItems = []; // guarda cada miniatura junto con su ángulo "de origen"
 
+// --- Ajustes del efecto de curvatura ---
+const SEGMENTS = 12;    // more slices make each card's curve smoother
+const BEND_GAIN = 2.8;  // cuánto se curva por cada grado de velocidad de giro
+const BEND_MAX = 8;     // límite de curvatura por tira, en grados
+
 // Generador de números "aleatorios" pero siempre iguales (con semilla fija)
 function seededRandom(seed) {
   let value = Math.sin(seed) * 10000;
   return value - Math.floor(value);
+}
+
+// Reemplaza la imagen plana de una miniatura por una cadena de tiras articuladas
+function buildBendableThumb(thumb) {
+  const imgEl = thumb.querySelector('img');
+  if (!imgEl) return;
+
+  const src = imgEl.currentSrc || imgEl.src;
+  const alt = imgEl.alt;
+  const totalW = thumb.offsetWidth || 170;
+  const w = totalW / SEGMENTS;
+
+  thumb.innerHTML = '';
+  thumb.setAttribute('role', 'img');
+  thumb.setAttribute('aria-label', alt);
+
+  let parent = thumb;
+  for (let i = 0; i < SEGMENTS; i++) {
+    const hinge = document.createElement('div');
+    hinge.className = 'hinge';
+    hinge.style.left = (i === 0 ? 0 : w) + 'px';
+    hinge.style.width = (w + 0.5) + 'px';
+    if (i === 0) hinge.classList.add('hinge-first');
+    if (i === SEGMENTS - 1) hinge.classList.add('hinge-last');
+
+    const slice = document.createElement('div');
+    slice.className = 'hinge-slice';
+
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = '';
+    img.decoding = 'async';
+    img.draggable = false;
+    img.style.width = totalW + 'px';
+    img.style.left = (-i * w) + 'px';
+
+    slice.appendChild(img);
+    hinge.appendChild(slice);
+    parent.appendChild(hinge);
+    parent = hinge; // la siguiente tira va DENTRO de esta
+  }
 }
 
 function buildSpiral() {
@@ -139,7 +196,7 @@ function buildSpiral() {
   spiralItems = [];
 
   const loops = 3;
-  const verticalSpacing = 800 / total;
+  const verticalSpacing = 1000 / total;
 
   // Construimos el orden barajado, usando semillas fijas (no Math.random)
   const order = [];
@@ -165,13 +222,18 @@ function buildSpiral() {
 
     spiralInner.appendChild(clone);
 
+    // Convertimos la miniatura en tiras articuladas (después de agregarla al DOM para poder medirla)
+    const thumb = clone.querySelector('.project-thumb');
+    if (thumb) buildBendableThumb(thumb);
+
     const jitterAngle = seededRandom(i * 7.3) * 10 - 5;
     const jitterY = seededRandom(i * 3.1 + 50) * 16 - 8;
 
-    const baseAngle = (360 / total) * i * loops + jitterAngle;
+    const baseAngle = (360 / total) * (i - (total - 1) / 2) * loops + jitterAngle;
     const yOffset = (i - (total - 1) / 2) * verticalSpacing + jitterY;
+    const verticalFocus = 1 - Math.abs(i - (total - 1) / 2) / Math.max((total - 1) / 2, 1);
 
-    spiralItems.push({ el: clone, baseAngle, yOffset });
+    spiralItems.push({ el: clone, baseAngle, yOffset, verticalFocus });
   }
 
   renderSpiral(0);
@@ -180,8 +242,10 @@ function buildSpiral() {
 let time = 0; // reloj interno que avanza solo, para el efecto de flotado
 
 function renderSpiral(rotation) {
-  const baseRadius = 90 + projectItems.length * 6;
-  const radius = baseRadius * (1 + dragBoost * 0.30); // expands up to 30% while dragging
+  const spiralWidth = spiralContainer.clientWidth || window.innerWidth;
+  const spiralHeight = spiralContainer.clientHeight || 700;
+  const baseRadius = Math.min(spiralWidth * 0.31, spiralHeight * 0.30);
+  const radius = baseRadius * (1 + dragBoost * 0.30); // expands while dragging or scrolling
 
   spiralItems.forEach((item, index) => {
     const angle = item.baseAngle + rotation;
@@ -189,22 +253,32 @@ function renderSpiral(rotation) {
 
     const x = radius * Math.sin(radians);
     const z = radius * Math.cos(radians);
+    const y = item.yOffset;
 
     item.z = z; // guardamos la profundidad actual de este frame
 
     const depthRatio = (z + radius) / (2 * radius);
-    const scale = (0.6 + depthRatio * 0.5) * (1 + dragBoost * 0.08); // micro-zoom up to 8%
-    const opacity = 0.3 + depthRatio * 0.7;
+    const focus = depthRatio * (0.35 + item.verticalFocus * 0.65);
+    const scale = (0.42 + focus * 0.88) * (1 + dragBoost * 0.08);
+    const opacity = 0.12 + focus * 0.88;
 
-    const floatOffset = Math.sin(time + index * 1.3) * 8;
-    const floatTilt = Math.sin(time + index * 1.3) * 4;
+    const floatWave = Math.sin(time * 0.45 + radians);
+    const floatOffset = floatWave * 2;
+    const floatTilt = floatWave * 1.2;
 
-    const blurAmount = (1 - depthRatio) * 5; // más atrás = más blur
+    const blurAmount = (1 - focus) * 7;
     item.el.style.filter = `blur(${blurAmount}px)`;
 
+    // Each card follows the same bend wave, based on its position around the spiral.
+    const sideFactor = z / radius; // +1 al frente, -1 atrás, 0 en los costados
+    const bendDirection = rotationDirection;
+    const bendStrength = Math.min(BEND_MAX, 3.2 + Math.abs(smoothOmega) * BEND_GAIN);
+    const bend = Math.max(-BEND_MAX, Math.min(BEND_MAX, -bendDirection * bendStrength * sideFactor));
+    item.el.style.setProperty('--bend', bend.toFixed(2));
+
     item.el.style.transform =
-      `translate(-50%, -50%) translate3d(${x}px, ${item.yOffset + floatOffset}px, ${z}px) ` +
-      `rotateX(${floatTilt}deg) scale(${scale})`;
+      `translate(-50%, -50%) translate3d(${x}px, ${y + floatOffset}px, ${z}px) ` +
+      `rotateX(${floatTilt}deg) rotateY(${angle}deg) scale(${scale})`;
     item.el.style.opacity = opacity;
     item.el.style.zIndex = Math.round(z);
   });
@@ -217,35 +291,41 @@ function renderSpiral(rotation) {
   frontThree.forEach((item) => item.el.classList.add('in-front'));
 }
 
-// --- NUEVO: giro automático infinito ---
+// --- Giro automático infinito ---
 const autoRotateSpeed = 0.15; // grados por frame, ajusta para más/menos velocidad
 let autoRotateDirection = 1; // 1 = derecha, -1 = izquierda
-
-
+let scrollVelocity = 0;
 
 let dragBoost = 0; // 0 = normal, 1 = fully expanded/zoomed
+
+let lastRotation = 0; // rotación del frame anterior, para medir la velocidad
+let smoothOmega = 0;  // velocidad de giro suavizada (grados por frame)
+let rotationDirection = 1;
 
 function animate() {
   time += 0.02;
 
   if (!isDragging) {
-    currentRotation += autoRotateSpeed * autoRotateDirection;
+    currentRotation += autoRotateSpeed * autoRotateDirection + scrollVelocity;
+    scrollVelocity *= 0.98;
   }
 
-  const targetBoost = isDragging ? 1 : 0;
+  const targetBoost = isDragging ? 1 : Math.min(Math.abs(scrollVelocity) / 0.5, 1);
   dragBoost += (targetBoost - dragBoost) * 0.08; // smoothly eases toward the target each frame
+
+  // Velocidad de giro: cuánto cambió la rotación desde el frame anterior, suavizada
+  const omega = currentRotation - lastRotation;
+  lastRotation = currentRotation;
+  if (omega !== 0) rotationDirection = Math.sign(omega);
+  smoothOmega += (omega - smoothOmega) * 0.12;
 
   renderSpiral(currentRotation);
   requestAnimationFrame(animate);
 }
 
-
-
 // Seleccionamos los botones de vista y los dos contenedores
 const viewBtns = document.querySelectorAll('.view-btn');
-const projectsList = document.querySelector('.projects-list');
-
-// Forzamos el estado inicial: spiral visible, list oculta — sin importar el tamaño de pantalla
+const categoryList = document.querySelector('.category-list');
 
 viewBtns.forEach((btn) => {
   btn.addEventListener('click', () => {
@@ -255,10 +335,10 @@ viewBtns.forEach((btn) => {
     btn.classList.add('active');
 
     if (selectedView === 'spiral') {
-      projectsList.classList.add('is-hidden');
+      categoryList.classList.add('is-hidden');
       spiralContainer.classList.remove('is-hidden');
     } else {
-      projectsList.classList.remove('is-hidden');
+      categoryList.classList.remove('is-hidden');
       spiralContainer.classList.add('is-hidden');
     }
   });
@@ -274,11 +354,23 @@ const spiral = document.querySelector('.projects-spiral');
 
 // 1. Cuando el usuario presiona (mouse) o toca (celular)
 spiral.addEventListener('pointerdown', (e) => {
-  e.preventDefault();
+  scrollVelocity = 0;
   isDragging = true;
   startX = e.clientX;
   startRotation = currentRotation;
 });
+
+spiral.addEventListener('wheel', (e) => {
+  const deltaScale = e.deltaMode === WheelEvent.DOM_DELTA_LINE
+    ? 16
+    : e.deltaMode === WheelEvent.DOM_DELTA_PAGE ? spiral.clientHeight : 1;
+  const delta = e.deltaY * deltaScale;
+  if (delta === 0) return;
+
+  scrollVelocity = Math.max(-3.5, Math.min(3.5, scrollVelocity + delta * 0.0045));
+  autoRotateDirection = delta > 0 ? 1 : -1;
+  rotationDirection = Math.sign(delta);
+}, { passive: true });
 
 // Evita que los links clonados dentro del spiral naveguen al hacer click
 spiral.addEventListener('click', (e) => {
@@ -291,7 +383,10 @@ window.addEventListener('pointermove', (e) => {
 
   const deltaX = e.clientX - startX;
   const sensitivity = 0.4;
-  currentRotation = startRotation + deltaX * sensitivity;
+  const nextRotation = startRotation + deltaX * sensitivity;
+  const dragDirection = Math.sign(nextRotation - currentRotation);
+  if (dragDirection !== 0) rotationDirection = dragDirection;
+  currentRotation = nextRotation;
 
   renderSpiral(currentRotation);
 });
@@ -302,8 +397,13 @@ window.addEventListener('pointerup', () => {
     const netDelta = currentRotation - startRotation; // hacia dónde se movió en total este arrastre
     if (netDelta !== 0) {
       autoRotateDirection = netDelta > 0 ? 1 : -1;
+      rotationDirection = autoRotateDirection;
     }
   }
+  isDragging = false;
+});
+
+window.addEventListener('pointercancel', () => {
   isDragging = false;
 });
 
@@ -355,7 +455,7 @@ navLinks.forEach((link) => {
   });
 });
 
-// ---------- ABRIR PROYECTO (spiral y lista) ----------
+// ---------- ABRIR PROYECTO (spiral y categorías) ----------
 
 const projectDetailTitle = document.getElementById('project-detail-title');
 const projectDetailCategory = document.getElementById('project-detail-category');
@@ -363,6 +463,8 @@ const projectDetailDesc = document.getElementById('project-detail-desc');
 const projectVideoIframe = document.getElementById('project-video-iframe');
 const caseBtn = document.getElementById('case-btn');
 const closeBtnProject = document.getElementById('project-close-btn');
+
+let returnPage = 'trabajos'; // recuerda a qué página debe volver la "X" del proyecto
 
 function openProject(linkEl) {
   const projectItem = linkEl.closest('li');
@@ -402,21 +504,16 @@ function openProject(linkEl) {
     });
   }
 
+  // Guardamos desde qué página abrimos el proyecto, para que la "X" vuelva ahí
+  const activePage = document.querySelector('.page.active');
+  returnPage = activePage ? activePage.getAttribute('data-page') : 'trabajos';
+
   goToPage('project');
 }
 
-// Botón "volver"
+// Botón "X": vuelve a la página desde donde abriste el proyecto
 closeBtnProject.addEventListener('click', () => {
-  goToPage('trabajos');
-});
-
-// --- Clic en la vista LISTA (no necesita distinguir arrastre, es un clic normal) ---
-projectItems.forEach((item) => {
-  const link = item.querySelector('a');
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    openProject(link);
-  });
+  goToPage(returnPage);
 });
 
 // --- Clic en el SPIRAL (aquí sí hay que distinguir clic real de arrastre) ---
@@ -440,6 +537,55 @@ spiral.addEventListener('click', (e) => {
     }
   }
   // Si dragDistance >= 6, no hacemos nada: fue un arrastre, ya se ocupó de eso el otro código
+});
+
+// ---------- CATEGORÍAS (vista "list") ----------
+
+const categoryTitleEl = document.getElementById('category-title');
+const categoryGrid = document.getElementById('category-grid');
+
+function openCategory(categoryKey, categoryLabel) {
+  categoryTitleEl.textContent = categoryLabel;
+  categoryGrid.innerHTML = '';
+
+  projectItems.forEach((item) => {
+    const categories = (item.getAttribute('data-category') || '').split(' ');
+    if (!categories.includes(categoryKey)) return;
+
+    const clone = item.cloneNode(true);
+    clone.classList.remove('project-item');
+    clone.classList.add('category-item');
+    categoryGrid.appendChild(clone);
+  });
+
+  // Si todavía no hay nada en esta categoría, mostramos un mensaje amable
+  if (categoryGrid.children.length === 0) {
+    const empty = document.createElement('li');
+    empty.classList.add('category-empty');
+    empty.textContent = document.documentElement.lang === 'en' ? 'coming soon' : 'próximamente';
+    categoryGrid.appendChild(empty);
+  }
+
+  goToPage('category');
+}
+
+categoryList.querySelectorAll('a').forEach((link) => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    openCategory(link.getAttribute('data-category'), link.textContent);
+  });
+});
+
+// Un solo listener en la grilla maneja el clic de cualquier tarjeta que esté dentro
+categoryGrid.addEventListener('click', (e) => {
+  const link = e.target.closest('a');
+  if (!link) return;
+  e.preventDefault();
+  openProject(link);
+});
+
+document.getElementById('category-back').addEventListener('click', () => {
+  goToPage('trabajos');
 });
 
 // ---------- SCROLL TEXT HIGHLIGHT (About) ----------

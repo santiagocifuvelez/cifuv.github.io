@@ -454,7 +454,7 @@ a {
   display: block;
   perspective: 1000px;
   margin-top: 4rem;
-  touch-action: none;
+  touch-action: pan-y;
 }
 
 .projects-spiral.active {
@@ -465,7 +465,7 @@ a {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 170px;
+  width: min(220px, 50vw);
   list-style: none;
   transform-style: preserve-3d;
   pointer-events: none;
@@ -477,11 +477,13 @@ a {
 }
 
 .spiral-item .project-thumb {
+  position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: 8px;   /* miniaturas circulares, look típico de spiral views */
-  background-color: #2a2a2a;
-  overflow: hidden;
+  background: transparent;
+  overflow: visible;      /* the bent segments need room to stick out */
+  border-radius: 0;
+  perspective: 350px;     /* gives the bend its depth */
 }
 
 .spiral-item .project-info {
@@ -640,4 +642,121 @@ a {
   width: 100%;
   border-radius: 12px;
   display: block;
+}
+
+/* ---------- CATEGORY LIST (list view) ---------- */
+.category-list {
+  list-style: none;
+  margin-top: 5rem;
+}
+
+.category-list li {
+  margin-bottom: 1.2rem;
+}
+
+.category-list a {
+  display: inline-block;
+  font-size: 2rem;
+  font-weight: 500;
+  text-transform: lowercase;
+  transition: opacity 0.3s ease;
+}
+
+.category-list a:hover {
+  opacity: 0.5;
+}
+
+/* ---------- CATEGORY PAGE ---------- */
+.category-page {
+  padding: 5rem 1.2rem 4rem;
+}
+
+.category-back {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  opacity: 0.6;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: opacity 0.3s ease;
+}
+
+.category-back:hover {
+  opacity: 1;
+}
+
+.category-title {
+  font-size: 2rem;
+  font-weight: 500;
+  text-transform: lowercase;
+  margin-bottom: 2rem;
+}
+
+.category-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.category-item a {
+  display: block;
+}
+
+.category-item a:hover .project-thumb {
+  transform: scale(1.03);
+}
+
+.category-empty {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+@media (min-width: 768px) {
+  .category-page {
+    padding: 7rem 2.5rem 6rem;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* ---------- BENDABLE SPIRAL CARDS ---------- */
+.hinge {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transform-origin: 0 50%;
+  transform-style: preserve-3d;
+}
+
+/* every hinge except the first one rotates a little more than the previous one */
+.hinge .hinge {
+  transform: rotateY(calc(var(--bend, 0) * 1deg));
+}
+
+.hinge-slice {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.spiral-item .hinge-slice img {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  display: block;
+}
+
+.hinge-first > .hinge-slice {
+  border-radius: 8px 0 0 8px;
+}
+
+.hinge-last > .hinge-slice {
+  border-radius: 0 8px 8px 0;
 }
